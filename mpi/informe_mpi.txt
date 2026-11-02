@@ -1,0 +1,9 @@
+Prueba MPI - archivo creado
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 4
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Tiempo: 8 ms
+==============================
+

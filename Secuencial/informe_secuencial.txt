@@ -1,0 +1,8 @@
+Prueba de informe - el archivo se creo bien
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Tiempo: 47 ms
+==============================
+

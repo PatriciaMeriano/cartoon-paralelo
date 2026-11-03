@@ -236,50 +236,117 @@ void generarGraficos(const vector<Run>& seq, const vector<Run>& omp,
                      const vector<Run>& mpi, const vector<Run>& hib) {
     cout << "\nGenerando graficos SVG...\n";
 
-    vector<pair<string, int>> comparacion;
+    // --- Comparacion (barras agrupadas) ---
+    vector<string> labels = {"Secuencial", "OpenMP 1", "OpenMP 2", "OpenMP 4", "OpenMP 8", "MPI 4", "Hibrida"};
+    vector<int> tLoro(7, 0), tEtn(7, 0);
 
     // Secuencial
-    for (auto& r : seq)
-        if (r.imagen == "loro.jpg" && r.filtro == 3 && r.niveles == 3 && r.umbral == 50) {
-            comparacion.push_back({"Secuencial", r.tiempo});
-            break;
+    for (auto& r : seq) {
+        if (r.imagen == "loro.jpg" && r.filtro == 3 && r.niveles == 3 && (tLoro[0] == 0 || r.tiempo < tLoro[0])) tLoro[0] = r.tiempo;
+        if (r.imagen == "etn.jpg"  && r.filtro == 3 && r.niveles == 3 && (tEtn[0] == 0 || r.tiempo < tEtn[0]))  tEtn[0] = r.tiempo;
+    }
+    // OpenMP
+    int thr[] = {1,2,4,8};
+    for (int i = 0; i < 4; i++) {
+        for (auto& r : omp) {
+            if (r.imagen == "loro.jpg" && r.threads == thr[i] && r.filtro == 3 && r.niveles == 3 && (tLoro[1+i] == 0 || r.tiempo < tLoro[1+i])) tLoro[1+i] = r.tiempo;
+            if (r.imagen == "etn.jpg"  && r.threads == thr[i] && r.filtro == 3 && r.niveles == 3 && (tEtn[1+i] == 0 || r.tiempo < tEtn[1+i]))  tEtn[1+i] = r.tiempo;
+        }
+    }
+    // MPI
+    for (auto& r : mpi) {
+        if (r.imagen == "loro.jpg" && r.procesos == 4 && (tLoro[5] == 0 || r.tiempo < tLoro[5])) tLoro[5] = r.tiempo;
+        if (r.imagen == "etn.jpg"  && r.procesos == 4 && (tEtn[5] == 0 || r.tiempo < tEtn[5]))  tEtn[5] = r.tiempo;
+    }
+    // Hibrida
+    for (auto& r : hib) {
+        if (r.imagen == "loro.jpg" && r.threads_por == 2 && (tLoro[6] == 0 || r.tiempo < tLoro[6])) tLoro[6] = r.tiempo;
+        if (r.imagen == "etn.jpg"  && r.threads_por == 2 && (tEtn[6] == 0 || r.tiempo < tEtn[6]))  tEtn[6] = r.tiempo;
+    }
+
+    // Generar SVG comparacion
+    ofstream svg("grafico_comparacion.svg");
+    if (svg) {
+        int n = 7;
+        int width = 1050, height = 560;
+        int marginL = 90, marginB = 160, marginT = 80, marginR = 30;
+        int chartW = width - marginL - marginR;
+        int chartH = height - marginT - marginB;
+        int maxT = 10;
+        for (int v : tLoro) maxT = max(maxT, v);
+        for (int v : tEtn) maxT = max(maxT, v);
+        maxT = ((maxT/10)+1)*10;
+
+        svg << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        svg << "<svg width=\"" << width << "\" height=\"" << height << "\" xmlns=\"http://www.w3.org/2000/svg\">\n";
+        svg << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
+        svg << "<text x=\"" << width/2 << "\" y=\"35\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"bold\" font-family=\"Arial\">Comparacion de tiempos</text>\n";
+        svg << "<text x=\"" << width/2 << "\" y=\"58\" text-anchor=\"middle\" font-size=\"14\" font-family=\"Arial\">loro.jpg (azul) vs etn.jpg (naranja)</text>\n";
+
+        // Eje Y
+        svg << "<line x1=\"" << marginL << "\" y1=\"" << marginT << "\" x2=\"" << marginL << "\" y2=\"" << (marginT+chartH) << "\" stroke=\"black\"/>\n";
+        for (int i = 0; i <= 5; i++) {
+            int y = marginT + chartH - (chartH * i / 5);
+            svg << "<line x1=\"" << marginL << "\" y1=\"" << y << "\" x2=\"" << (marginL+chartW) << "\" y2=\"" << y << "\" stroke=\"#eee\"/>\n";
+            svg << "<text x=\"" << (marginL-8) << "\" y=\"" << (y+4) << "\" text-anchor=\"end\" font-size=\"12\" font-family=\"Arial\">" << (maxT*i/5) << "</text>\n";
         }
 
-    // OpenMP
-    int thr_list[] = {1, 2, 4, 8};
-    vector<pair<int, int>> ompData;
-    for (int t : thr_list) {
+        int groupW = chartW / n;
+        int barW = groupW / 3;
+        for (int i = 0; i < n; i++) {
+            int baseX = marginL + i * groupW + 15;
+
+            if (tLoro[i] > 0) {
+                int h = (int)((double)tLoro[i] / maxT * chartH);
+                int y = marginT + chartH - h;
+                svg << "<rect x=\"" << baseX << "\" y=\"" << y << "\" width=\"" << barW << "\" height=\"" << h << "\" fill=\"#3498db\" stroke=\"black\"/>\n";
+                svg << "<text x=\"" << (baseX+barW/2) << "\" y=\"" << (y-4) << "\" text-anchor=\"middle\" font-size=\"10\" font-family=\"Arial\">" << tLoro[i] << "</text>\n";
+            }
+            if (tEtn[i] > 0) {
+                int h = (int)((double)tEtn[i] / maxT * chartH);
+                int y = marginT + chartH - h;
+                int x2 = baseX + barW + 6;
+                svg << "<rect x=\"" << x2 << "\" y=\"" << y << "\" width=\"" << barW << "\" height=\"" << h << "\" fill=\"#e67e22\" stroke=\"black\"/>\n";
+                svg << "<text x=\"" << (x2+barW/2) << "\" y=\"" << (y-4) << "\" text-anchor=\"middle\" font-size=\"10\" font-family=\"Arial\">" << tEtn[i] << "</text>\n";
+            }
+            svg << "<text x=\"" << (baseX+barW) << "\" y=\"" << (marginT+chartH+35) << "\" text-anchor=\"end\" font-size=\"11\" font-family=\"Arial\" transform=\"rotate(-40 " << (baseX+barW) << " " << (marginT+chartH+35) << ")\">" << labels[i] << "</text>\n";
+        }
+
+        // Leyenda
+        svg << "<rect x=\"880\" y=\"75\" width=\"18\" height=\"18\" fill=\"#3498db\"/>\n";
+        svg << "<text x=\"905\" y=\"89\" font-size=\"13\" font-family=\"Arial\">loro.jpg</text>\n";
+        svg << "<rect x=\"880\" y=\"100\" width=\"18\" height=\"18\" fill=\"#e67e22\"/>\n";
+        svg << "<text x=\"905\" y=\"114\" font-size=\"13\" font-family=\"Arial\">etn.jpg</text>\n";
+        svg << "</svg>\n";
+        cout << "  -> grafico_comparacion.svg\n";
+    }
+
+    // --- OpenMP loro ---
+    vector<pair<int,int>> ompL;
+    for (int t : {1,2,4,8}) {
         for (auto& r : omp)
-            if (r.imagen == "loro.jpg" && r.filtro == 3 && r.niveles == 3 && r.umbral == 50 && r.threads == t) {
-                comparacion.push_back({"OpenMP " + to_string(t) + " thr", r.tiempo});
-                ompData.push_back({t, r.tiempo});
+            if (r.imagen == "loro.jpg" && r.threads == t && r.filtro == 3 && r.niveles == 3) {
+                ompL.push_back({t, r.tiempo});
                 break;
             }
     }
+    if (!ompL.empty()) generarSVGOpenMP(ompL, "grafico_openmp_loro.svg");
 
-    // MPI
-    for (auto& r : mpi)
-        if (r.imagen == "loro.jpg" && r.filtro == 3 && r.niveles == 3 && r.umbral == 50 && r.procesos == 4) {
-            comparacion.push_back({"MPI 4 proc", r.tiempo});
-            break;
-        }
-
-    // Hibrida
-    for (auto& r : hib)
-        if (r.imagen == "loro.jpg" && r.filtro == 3 && r.niveles == 3 && r.umbral == 50 && r.threads_por == 2) {
-            comparacion.push_back({"Hibrida 1x2", r.tiempo});
-            break;
-        }
-
-    if (comparacion.empty()) {
-        cout << "  (usando datos de ejemplo - no se encontraron ejecuciones exactas)\n";
-        comparacion = {{"Secuencial",47},{"OpenMP 1",24},{"OpenMP 2",13},{"OpenMP 4",9},{"OpenMP 8",9},{"MPI 4",8},{"Hibrida",12}};
-        ompData = {{1,24},{2,13},{4,9},{8,9}};
+    // --- OpenMP etn ---
+    vector<pair<int,int>> ompE;
+    for (int t : {1,2,4,8}) {
+        for (auto& r : omp)
+            if (r.imagen == "etn.jpg" && r.threads == t && r.filtro == 3 && r.niveles == 3) {
+                ompE.push_back({t, r.tiempo});
+                break;
+            }
     }
+    if (!ompE.empty()) generarSVGOpenMP(ompE, "grafico_openmp_etn.svg");
 
-    generarSVGComparacion(comparacion, "grafico_comparacion.svg");
-    if (!ompData.empty())
-        generarSVGOpenMP(ompData, "grafico_openmp.svg");
+    cout << "\nArchivos generados:\n";
+    cout << "  - grafico_comparacion.svg\n";
+    if (!ompL.empty()) cout << "  - grafico_openmp_loro.svg\n";
+    if (!ompE.empty()) cout << "  - grafico_openmp_etn.svg\n";
 }
 
 // ==================== REPORTE DE METRICAS ====================

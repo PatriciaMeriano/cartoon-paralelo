@@ -62,10 +62,18 @@ echo.
 echo Ejecutando analisis...
 analizar_metricas.exe
 echo.
-echo Abriendo graficos...
-if exist grafico_comparacion.svg start "" grafico_comparacion.svg
-if exist grafico_openmp.svg start "" grafico_openmp.svg
 echo.
+echo === ARCHIVOS GENERADOS ===
+dir /b *.svg 2>nul
+echo.
+echo Abriendo graficos (uno por uno)...
+if exist grafico_comparacion.svg start "" grafico_comparacion.svg
+timeout /t 2 /nobreak >nul
+if exist grafico_openmp_loro.svg start "" grafico_openmp_loro.svg
+timeout /t 2 /nobreak >nul
+if exist grafico_openmp_etn.svg start "" grafico_openmp_etn.svg
+echo.
+echo Listo. Si algun grafico no se abrio, abrilo manualmente desde esta carpeta.
 pause
 goto menu
 

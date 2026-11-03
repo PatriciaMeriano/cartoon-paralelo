@@ -83,3 +83,10 @@ Filtro: 4 | Niveles: 6 | Umbral: 29
 Tiempo: 44 ms
 ==============================
 
+==============================
+Version: SECUENCIAL
+Imagen: perro.jpg
+Filtro: 3 | Niveles: 5 | Umbral: 35
+Tiempo: 1737 ms
+==============================
+

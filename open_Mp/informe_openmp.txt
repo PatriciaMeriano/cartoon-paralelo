@@ -403,3 +403,39 @@ Tiempo: 6 ms
 Archivo generado: rdo_openmp_6threads.png
 ==============================
 
+==============================
+Version: OpenMP
+Imagen: perro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 20
+Threads: 1
+Tiempo: 930 ms
+Archivo generado: rdo_openmp_1threads.png
+==============================
+
+==============================
+Version: OpenMP
+Imagen: perro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 25
+Threads: 2
+Tiempo: 304 ms
+Archivo generado: rdo_openmp_2threads.png
+==============================
+
+==============================
+Version: OpenMP
+Imagen: perro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 40
+Threads: 4
+Tiempo: 194 ms
+Archivo generado: rdo_openmp_4threads.png
+==============================
+
+==============================
+Version: OpenMP
+Imagen: perro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 30
+Threads: 6
+Tiempo: 153 ms
+Archivo generado: rdo_openmp_6threads.png
+==============================
+

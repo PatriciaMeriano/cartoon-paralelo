@@ -71,3 +71,11 @@ Filtro: 5 | Niveles: 9 | Umbral: 45
 Tiempo: 22 ms
 ==============================
 
+==============================
+Version: MPI
+Imagen: perro.jpg
+Procesos: 4
+Filtro: 3 | Niveles: 5 | Umbral: 35
+Tiempo: 362 ms
+==============================
+

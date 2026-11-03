@@ -88,3 +88,21 @@ Tiempo: 6 ms
 Archivo generado: rdo_hibrida_1proc_6threads.png
 ==============================
 
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: loro.jpg
+Procesos MPI: 1 | Threads por proceso: 4
+Filtro: 3 | Niveles: 3 | Umbral: 30
+Tiempo: 7 ms
+Archivo generado: rdo_hibrida_1proc_4threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: perro.jpg
+Procesos MPI: 1 | Threads por proceso: 3
+Filtro: 3 | Niveles: 3 | Umbral: 30
+Tiempo: 302 ms
+Archivo generado: rdo_hibrida_1proc_3threads.png
+==============================
+

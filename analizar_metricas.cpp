@@ -262,7 +262,9 @@ void generarReporte(const vector<Run>& all) {
         printBoth("   ------------------------------------------------");
         int bestEffP = -1;
         double bestEff = -1.0;
-        for (const auto& [p, tmin] : bestByP) {
+        for (map<int, int>::const_iterator it = bestByP.begin(); it != bestByP.end(); ++it) {
+            int p = it->first;
+            int tmin = it->second;
             double S = static_cast<double>(seqRef) / tmin;
             double E = (S / p) * 100.0;
             ostringstream line;

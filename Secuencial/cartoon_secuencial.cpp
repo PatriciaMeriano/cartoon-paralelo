@@ -182,6 +182,9 @@ int main(int argc, char** argv) {
     saveImage("rdo_seq.png", cartoon);
     cout << "Guardado: rdo_seq.png" << endl;
 
+    // Abrir la imagen automáticamente (Windows)
+    system("start \"\" \"rdo_seq.png\"");
+
     // Informe
     ofstream informe("informe_secuencial.txt", ios::app);
     if (informe.is_open()) {

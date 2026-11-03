@@ -102,6 +102,9 @@ cartoon.exe "%img%" %filtro% %niveles% %umbral%
 cd /d "%~dp0"
 echo.
 echo Resultado: rdo_seq.png
+if exist "%CARPETA_SEQ%\rdo_seq.png" (
+    start "" "%CARPETA_SEQ%\rdo_seq.png"
+)
 pause
 goto menu
 
@@ -130,6 +133,9 @@ mpiexec -n %procesos% cartoon_mpi.exe "%img%" %filtro% %niveles% %umbral%
 cd /d "%~dp0"
 echo.
 echo Resultado: rdo_mpi.png
+if exist "%CARPETA_MPI%\rdo_mpi.png" (
+    start "" "%CARPETA_MPI%\rdo_mpi.png"
+)
 pause
 goto menu
 

@@ -55,3 +55,31 @@ Filtro: 3 | Niveles: 4 | Umbral: 20
 Tiempo: 80 ms
 ==============================
 
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 5 | Niveles: 7 | Umbral: 48
+Tiempo: 60 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 5 | Niveles: 3 | Umbral: 35
+Tiempo: 56 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 9 | Umbral: 21
+Tiempo: 47 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: etn.jpg
+Filtro: 4 | Niveles: 6 | Umbral: 29
+Tiempo: 44 ms
+==============================
+

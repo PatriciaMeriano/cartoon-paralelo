@@ -192,6 +192,10 @@ int main(int argc, char** argv) {
         saveImage(outputName.c_str(), out);
         cout << "Guardado: " << outputName << endl;
 
+        // Abrir la imagen automáticamente (Windows)
+        string cmd = "start \"\" \"" + outputName + "\"";
+        system(cmd.c_str());
+
         // Informe
         ofstream informe("informe_hibrida.txt", ios::app);
         if (informe.is_open()) {

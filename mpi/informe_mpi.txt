@@ -55,3 +55,19 @@ Filtro: 3 | Niveles: 4 | Umbral: 20
 Tiempo: 13 ms
 ==============================
 
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 4
+Filtro: 5 | Niveles: 7 | Umbral: 48
+Tiempo: 12 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: etn.jpg
+Procesos: 2
+Filtro: 5 | Niveles: 9 | Umbral: 45
+Tiempo: 22 ms
+==============================
+

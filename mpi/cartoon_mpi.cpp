@@ -216,6 +216,9 @@ int main(int argc, char** argv) {
         saveImage("rdo_mpi.png", out);
         cout << "Guardado: rdo_mpi.png" << endl;
 
+        // Abrir la imagen automáticamente (Windows)
+        system("start \"\" \"rdo_mpi.png\"");
+
         // Informe
         ofstream informe("informe_mpi.txt", ios::app);
         if (informe.is_open()) {

@@ -1,0 +1,23 @@
+# Binarios compilados
+*.exe
+*.o
+*.out
+analizar_metricas
+
+# Imágenes de resultado (se pueden regenerar)
+rdo_*.png
+rdo_seq.png
+
+# Archivo de métricas generado (se regenera con analizar_metricas)
+metricas_rendimiento.txt
+analisis/
+
+# Archivos temporales / sistema
+*.tmp
+*.log
+Thumbs.db
+.DS_Store
+*~
+
+# Opcional: si no quieres subir las imágenes de entrada
+# *.jpg

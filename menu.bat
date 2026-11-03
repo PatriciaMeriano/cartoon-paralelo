@@ -29,18 +29,40 @@ echo.
 echo  4. Ejecutar HIBRIDA (MPI + OpenMP)
 echo     Carpeta: %CARPETA_HIB%
 echo.
-echo  5. Cambiar rutas de las carpetas
-echo  6. Salir
+echo  5. Ver METRICAS de rendimiento (Speedup, Eficiencia, etc.)
+echo  6. Cambiar rutas de las carpetas
+echo  7. Salir
 echo.
-set /p opcion=Elige una opcion (1-6): 
+set /p opcion=Elige una opcion (1-7): 
 
 if "%opcion%"=="1" goto secuencial
 if "%opcion%"=="2" goto mpi
 if "%opcion%"=="3" goto openmp
 if "%opcion%"=="4" goto hibrida
-if "%opcion%"=="5" goto cambiar
-if "%opcion%"=="6" exit
+if "%opcion%"=="5" goto metricas
+if "%opcion%"=="6" goto cambiar
+if "%opcion%"=="7" exit
 echo Opcion invalida.
+pause
+goto menu
+
+:metricas
+cls
+echo --- METRICAS DE RENDIMIENTO (C++) ---
+echo.
+echo Compilando analizador...
+g++ analizar_metricas.cpp -o analizar_metricas.exe -std=c++17 -O2 2>nul
+if not exist analizar_metricas.exe (
+    echo ERROR: No se pudo compilar. Asegurate de tener g++ en el PATH.
+    echo Puedes compilar manualmente con:
+    echo   g++ analizar_metricas.cpp -o analizar_metricas.exe -std=c++17 -O2
+    pause
+    goto menu
+)
+echo.
+echo Ejecutando analisis...
+analizar_metricas.exe
+echo.
 pause
 goto menu
 

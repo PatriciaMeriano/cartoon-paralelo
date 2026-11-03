@@ -7,3 +7,66 @@ Tiempo: 12 ms
 Archivo generado: rdo_hibrida_1proc_2threads.png
 ==============================
 
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: loro.jpg
+Procesos MPI: 1 | Threads por proceso: 4
+Filtro: 3 | Niveles: 4 | Umbral: 30
+Tiempo: 8 ms
+Archivo generado: rdo_hibrida_1proc_4threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: loro.jpg
+Procesos MPI: 1 | Threads por proceso: 8
+Filtro: 3 | Niveles: 4 | Umbral: 30
+Tiempo: 7 ms
+Archivo generado: rdo_hibrida_1proc_8threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: etn.jpg
+Procesos MPI: 1 | Threads por proceso: 2
+Filtro: 3 | Niveles: 3 | Umbral: 30
+Tiempo: 16 ms
+Archivo generado: rdo_hibrida_1proc_2threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: loro.jpg
+Procesos MPI: 1 | Threads por proceso: 2
+Filtro: 3 | Niveles: 3 | Umbral: 10
+Tiempo: 21 ms
+Archivo generado: rdo_hibrida_1proc_2threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: etn.jpg
+Procesos MPI: 1 | Threads por proceso: 3
+Filtro: 3 | Niveles: 3 | Umbral: 20
+Tiempo: 14 ms
+Archivo generado: rdo_hibrida_1proc_3threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: etn.jpg
+Procesos MPI: 1 | Threads por proceso: 2
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Tiempo: 13 ms
+Archivo generado: rdo_hibrida_1proc_2threads.png
+==============================
+
+==============================
+Version: HIBRIDA (MPI + OpenMP)
+Imagen: loro.jpg
+Procesos MPI: 1 | Threads por proceso: 2
+Filtro: 3 | Niveles: 4 | Umbral: 20
+Tiempo: 16 ms
+Archivo generado: rdo_hibrida_1proc_2threads.png
+==============================
+

@@ -7,3 +7,51 @@ Filtro: 3 | Niveles: 3 | Umbral: 50
 Tiempo: 8 ms
 ==============================
 
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 4
+Filtro: 3 | Niveles: 3 | Umbral: 35
+Tiempo: 9 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: etn.jpg
+Procesos: 4
+Filtro: 3 | Niveles: 3 | Umbral: 30
+Tiempo: 10 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 3
+Filtro: 3 | Niveles: 9 | Umbral: 40
+Tiempo: 19 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 2
+Filtro: 3 | Niveles: 5 | Umbral: 36
+Tiempo: 32 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 4
+Filtro: 5 | Niveles: 3 | Umbral: 10
+Tiempo: 18 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 4
+Filtro: 3 | Niveles: 4 | Umbral: 20
+Tiempo: 13 ms
+==============================
+

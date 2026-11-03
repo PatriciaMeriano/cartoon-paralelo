@@ -6,3 +6,52 @@ Filtro: 3 | Niveles: 3 | Umbral: 50
 Tiempo: 47 ms
 ==============================
 
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 35
+Tiempo: 44 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: etn.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 20
+Tiempo: 49 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 25
+Tiempo: 64 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 5 | Niveles: 9 | Umbral: 40
+Tiempo: 82 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 5 | Niveles: 3 | Umbral: 10
+Tiempo: 131 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 4 | Niveles: 3 | Umbral: 45
+Tiempo: 84 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 4 | Umbral: 20
+Tiempo: 80 ms
+==============================
+

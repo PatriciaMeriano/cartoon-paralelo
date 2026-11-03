@@ -8,7 +8,6 @@ set "CARPETA_SEQ=C:\2026\CA\FinalMio\secuencial"
 set "CARPETA_MPI=C:\2026\CA\FinalMio\mpi"
 set "CARPETA_OMP=C:\2026\CA\FinalMio\openmp"
 set "CARPETA_HIB=C:\2026\CA\FinalMio\hibrida"
-set "MSYS2=C:\msys64\mingw64.exe"
 :: ===================================================
 
 :menu
@@ -29,7 +28,7 @@ echo.
 echo  4. Ejecutar HIBRIDA (MPI + OpenMP)
 echo     Carpeta: %CARPETA_HIB%
 echo.
-echo  5. Ver METRICAS de rendimiento (Speedup, Eficiencia, etc.)
+echo  5. Ver METRICAS + GRAFICOS de rendimiento
 echo  6. Cambiar rutas de las carpetas
 echo  7. Salir
 echo.
@@ -48,7 +47,7 @@ goto menu
 
 :metricas
 cls
-echo --- METRICAS DE RENDIMIENTO (C++) ---
+echo --- METRICAS + GRAFICOS DE RENDIMIENTO ---
 echo.
 echo Compilando analizador...
 g++ analizar_metricas.cpp -o analizar_metricas.exe -std=c++17 -O2 2>nul
@@ -62,6 +61,10 @@ if not exist analizar_metricas.exe (
 echo.
 echo Ejecutando analisis...
 analizar_metricas.exe
+echo.
+echo Abriendo graficos...
+if exist grafico_comparacion.svg start "" grafico_comparacion.svg
+if exist grafico_openmp.svg start "" grafico_openmp.svg
 echo.
 pause
 goto menu
@@ -146,12 +149,9 @@ echo.
 echo Se abrira MSYS2. Dentro vas a ver los comandos listos para copiar.
 echo.
 pause
-
 start "" "C:\msys64\usr\bin\mintty.exe" -i /msys2.ico /mingw64.exe /usr/bin/bash --login -c ^
 "echo ''; echo '========================================='; echo '  COMANDOS PARA OPENMP'; echo '========================================='; echo ''; echo '1. Entrar a la carpeta:'; echo '   cd /c/2026/CA/FinalMio/open_mp'; echo ''; echo '2. Compilar:'; echo '   g++ cartoon_openmp.cpp -o cartoon_openmp.exe -std=c++17 -O2 -fopenmp'; echo ''; echo '3. Ejecutar (cambia el ultimo numero = threads):'; echo '   ./cartoon_openmp.exe loro.jpg 3 3 50 1'; echo '   ./cartoon_openmp.exe loro.jpg 3 3 50 2'; echo '   ./cartoon_openmp.exe loro.jpg 3 3 50 4'; echo '   ./cartoon_openmp.exe loro.jpg 3 3 50 8'; echo ''; echo '========================================='; echo ''; exec bash -i"
-
 goto menu
-
 
 :hibrida
 cls
@@ -160,8 +160,6 @@ echo.
 echo Se abrira MSYS2. Dentro vas a ver los comandos listos.
 echo.
 pause
-
 start "" "C:\msys64\usr\bin\mintty.exe" -i /msys2.ico /mingw64.exe /usr/bin/bash --login -c ^
 "echo ''; echo '========================================='; echo '  COMANDOS PARA HIBRIDA'; echo '========================================='; echo ''; echo '1. Entrar a la carpeta:'; echo '   cd /c/2026/CA/FinalMio/hibrida'; echo ''; echo '2. Compilar:'; echo '   g++ cartoon_hibrida.cpp -o cartoon_hibrida.exe -std=c++17 -O2 -fopenmp -I\"/c/Program Files (x86)/Microsoft SDKs/MPI/Include\" -L\"/c/Program Files (x86)/Microsoft SDKs/MPI/Lib/x64\" -lmsmpi'; echo ''; echo '3. Ejecutar:'; echo '   ./cartoon_hibrida.exe loro.jpg 3 3 50 2'; echo ''; echo '========================================='; echo ''; exec bash -i"
-
 goto menu

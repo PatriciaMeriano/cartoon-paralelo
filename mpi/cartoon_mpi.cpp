@@ -19,6 +19,7 @@
 
 using namespace std;
 
+// Estructura para representar una imagen en memoria
 struct Image {
     int width, height, channels;
     vector<unsigned char> data;
@@ -31,6 +32,7 @@ struct Image {
     }
 };
 
+// Carga una imagen desde disco (solo la ejecuta el proceso 0)
 Image loadImage(const char* filename) {
     int w, h, c;
     unsigned char* data = stbi_load(filename, &w, &h, &c, 0);
@@ -47,14 +49,21 @@ Image loadImage(const char* filename) {
     return img;
 }
 
+// Guarda una imagen en disco como PNG (solo la ejecuta el proceso 0)
 void saveImage(const char* filename, const Image& img) {
     stbi_write_png(filename, img.width, img.height, img.channels, img.data.data(), img.width * img.channels);
 }
 
-// Funciones de procesamiento (igual que la secuencial, pero sobre un bloque)
+// ============================================================
+// PROCESAMIENTO DE UN BLOQUE (se ejecuta en PARALELO en cada proceso)
+// Cada proceso MPI recibe una porcion de filas de la imagen y aplica
+// el filtro cartoon solo sobre esas filas.
+// ============================================================
+// Aplica el filtro cartoon sobre un bloque de filas
+// block = datos del bloque, local_h = cantidad de filas del bloque
 void processBlock(vector<unsigned char>& block, int local_h, int w, int channels,
                   int filterSize, int levels, int thresh) {
-    // Convertir bloque a gris
+    // 1. Convertir el bloque a escala de grises
     vector<unsigned char> gray(local_h * w);
     for (int i = 0; i < local_h * w; i++) {
         int base = i * channels;
@@ -64,7 +73,7 @@ void processBlock(vector<unsigned char>& block, int local_h, int w, int channels
         gray[i] = static_cast<unsigned char>(0.299f * r + 0.587f * g + 0.114f * b);
     }
 
-    // Blur simple
+    // 2. Aplicar blur (suavizado) al bloque en grises
     vector<unsigned char> blurred(gray.size());
     int k = filterSize / 2;
     for (int y = 0; y < local_h; y++) {
@@ -84,7 +93,7 @@ void processBlock(vector<unsigned char>& block, int local_h, int w, int channels
         }
     }
 
-    // Sobel (simplificado)
+    // 3. Detectar bordes con Sobel sobre el bloque suavizado
     vector<unsigned char> edges(local_h * w, 0);
     const int sx[3][3] = {{-1,0,1},{-2,0,2},{-1,0,1}};
     const int sy[3][3] = {{-1,-2,-1},{0,0,0},{1,2,1}};
@@ -112,7 +121,7 @@ void processBlock(vector<unsigned char>& block, int local_h, int w, int channels
         edges[i] = (edges[i] > thresh) ? 255 : 0;
     }
 
-    // Posterizar + aplicar bordes negros
+    // 4. Posterizar (reducir colores) y dibujar bordes en negro
     float step = 256.0f / levels;
     for (int y = 0; y < local_h; y++) {
         for (int x = 0; x < w; x++) {
@@ -130,9 +139,17 @@ void processBlock(vector<unsigned char>& block, int local_h, int w, int channels
     }
 }
 
+// ============================================================
+// FUNCION PRINCIPAL - VERSION MPI
+// La imagen se divide en bloques de filas. Cada proceso procesa
+// su bloque en paralelo y luego se juntan los resultados.
+// ============================================================
 int main(int argc, char** argv) {
+    // Inicializar MPI
     MPI_Init(&argc, &argv);
 
+    // rank = numero de este proceso (0, 1, 2, ...)
+    // size = cantidad total de procesos
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -140,7 +157,8 @@ int main(int argc, char** argv) {
     if (argc < 2) {
         if (rank == 0)
             cout << "Uso: mpirun -np N cartoon_mpi imagen.jpg [filtro=3] [niveles=3] [umbral=50]" << endl;
-        MPI_Finalize();
+        // Finalizar MPI
+    MPI_Finalize();
         return 1;
     }
 
@@ -152,6 +170,7 @@ int main(int argc, char** argv) {
     int width = 0, height = 0, channels = 0;
     vector<unsigned char> full_data;
 
+    // Solo el proceso 0 guarda el resultado y el informe
     if (rank == 0) {
         Image img = loadImage(input.c_str());
         width = img.width;
@@ -162,20 +181,24 @@ int main(int argc, char** argv) {
         cout << "Procesos MPI: " << size << endl;
     }
 
-    // Broadcast dimensiones
+    // Enviar las dimensiones de la imagen a todos los procesos
+    // (Broadcast: el proceso 0 envia, todos reciben)
     MPI_Bcast(&width, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&height, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&channels, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-    // Dividir filas
+    // Calcular cuantas filas le tocan a cada proceso
+    // Si la altura no es divisible, los primeros procesos reciben una fila extra
     int rows_per_proc = height / size;
     int remainder = height % size;
     int local_rows = rows_per_proc + (rank < remainder ? 1 : 0);
     int start_row = rank * rows_per_proc + min(rank, remainder);
 
-    // Preparar datos locales (con un poco de halo simple: se manda el bloque completo por simplicidad)
+    // Reservar memoria para el bloque local de este proceso
     vector<unsigned char> local_data(local_rows * width * channels);
 
+    // Calcular cuantos bytes enviar a cada proceso y desde que posicion
+    // (solo lo calcula el proceso 0)
     vector<int> sendcounts(size), displs(size);
     if (rank == 0) {
         int offset = 0;
@@ -187,16 +210,27 @@ int main(int argc, char** argv) {
         }
     }
 
+    // ============================================================
+    // DISTRIBUCION: Scatterv envia a cada proceso su bloque de filas
+    // El proceso 0 divide full_data y reparte los pedazos
+    // ============================================================
     MPI_Scatterv(full_data.data(), sendcounts.data(), displs.data(), MPI_UNSIGNED_CHAR,
                  local_data.data(), local_rows * width * channels, MPI_UNSIGNED_CHAR,
                  0, MPI_COMM_WORLD);
 
-    // Procesar bloque local
-    auto t1 = chrono::high_resolution_clock::now();
+    // ============================================================
+    // PROCESAMIENTO EN PARALELO
+    // Cada proceso ejecuta processBlock sobre su bloque de filas
+    // Esto ocurre simultaneamente en todos los procesos
+    // ============================================================
+    auto t1 = chrono::high_resolution_clock::now();  // Inicio medicion de tiempo
     processBlock(local_data, local_rows, width, channels, filterSize, levels, thresh);
     auto t2 = chrono::high_resolution_clock::now();
 
-    // Recoger resultados
+    // ============================================================
+    // RECOLECCION: Gatherv junta los bloques procesados en el proceso 0
+    // Cada proceso envia su bloque, el proceso 0 los ensambla
+    // ============================================================
     vector<unsigned char> result;
     if (rank == 0) result.resize(height * width * channels);
 

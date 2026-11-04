@@ -1,58 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1050" height="560" xmlns="http://www.w3.org/2000/svg">
+<svg width="1400" height="620" xmlns="http://www.w3.org/2000/svg">
 <rect width="100%" height="100%" fill="white"/>
-<text x="525" y="35" text-anchor="middle" font-size="20" font-weight="bold" font-family="Arial">Comparacion de tiempos</text>
-<text x="525" y="58" text-anchor="middle" font-size="14" font-family="Arial">loro.jpg (azul) vs etn.jpg (naranja)</text>
-<line x1="90" y1="80" x2="90" y2="400" stroke="black"/>
-<line x1="90" y1="400" x2="1020" y2="400" stroke="#eee"/>
-<text x="82" y="404" text-anchor="end" font-size="12" font-family="Arial">0</text>
-<line x1="90" y1="336" x2="1020" y2="336" stroke="#eee"/>
-<text x="82" y="340" text-anchor="end" font-size="12" font-family="Arial">10</text>
-<line x1="90" y1="272" x2="1020" y2="272" stroke="#eee"/>
-<text x="82" y="276" text-anchor="end" font-size="12" font-family="Arial">20</text>
-<line x1="90" y1="208" x2="1020" y2="208" stroke="#eee"/>
-<text x="82" y="212" text-anchor="end" font-size="12" font-family="Arial">30</text>
-<line x1="90" y1="144" x2="1020" y2="144" stroke="#eee"/>
-<text x="82" y="148" text-anchor="end" font-size="12" font-family="Arial">40</text>
-<line x1="90" y1="80" x2="1020" y2="80" stroke="#eee"/>
-<text x="82" y="84" text-anchor="end" font-size="12" font-family="Arial">50</text>
-<rect x="105" y="119" width="44" height="281" fill="#3498db" stroke="black"/>
-<text x="127" y="115" text-anchor="middle" font-size="10" font-family="Arial">44</text>
-<rect x="155" y="87" width="44" height="313" fill="#e67e22" stroke="black"/>
-<text x="177" y="83" text-anchor="middle" font-size="10" font-family="Arial">49</text>
-<text x="149" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 149 435)">Secuencial</text>
-<rect x="237" y="247" width="44" height="153" fill="#3498db" stroke="black"/>
-<text x="259" y="243" text-anchor="middle" font-size="10" font-family="Arial">24</text>
-<rect x="287" y="202" width="44" height="198" fill="#e67e22" stroke="black"/>
-<text x="309" y="198" text-anchor="middle" font-size="10" font-family="Arial">31</text>
-<text x="281" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 281 435)">OpenMP 1</text>
-<rect x="369" y="317" width="44" height="83" fill="#3498db" stroke="black"/>
-<text x="391" y="313" text-anchor="middle" font-size="10" font-family="Arial">13</text>
-<rect x="419" y="304" width="44" height="96" fill="#e67e22" stroke="black"/>
-<text x="441" y="300" text-anchor="middle" font-size="10" font-family="Arial">15</text>
-<text x="413" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 413 435)">OpenMP 2</text>
-<rect x="501" y="349" width="44" height="51" fill="#3498db" stroke="black"/>
-<text x="523" y="345" text-anchor="middle" font-size="10" font-family="Arial">8</text>
-<rect x="551" y="317" width="44" height="83" fill="#e67e22" stroke="black"/>
-<text x="573" y="313" text-anchor="middle" font-size="10" font-family="Arial">13</text>
-<text x="545" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 545 435)">OpenMP 4</text>
-<rect x="633" y="343" width="44" height="57" fill="#3498db" stroke="black"/>
-<text x="655" y="339" text-anchor="middle" font-size="10" font-family="Arial">9</text>
-<rect x="683" y="324" width="44" height="76" fill="#e67e22" stroke="black"/>
-<text x="705" y="320" text-anchor="middle" font-size="10" font-family="Arial">12</text>
-<text x="677" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 677 435)">OpenMP 8</text>
-<rect x="765" y="349" width="44" height="51" fill="#3498db" stroke="black"/>
-<text x="787" y="345" text-anchor="middle" font-size="10" font-family="Arial">8</text>
-<rect x="815" y="336" width="44" height="64" fill="#e67e22" stroke="black"/>
-<text x="837" y="332" text-anchor="middle" font-size="10" font-family="Arial">10</text>
-<text x="809" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 809 435)">MPI 4</text>
-<rect x="897" y="324" width="44" height="76" fill="#3498db" stroke="black"/>
-<text x="919" y="320" text-anchor="middle" font-size="10" font-family="Arial">12</text>
-<rect x="947" y="317" width="44" height="83" fill="#e67e22" stroke="black"/>
-<text x="969" y="313" text-anchor="middle" font-size="10" font-family="Arial">13</text>
-<text x="941" y="435" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 941 435)">Hibrida</text>
-<rect x="880" y="75" width="18" height="18" fill="#3498db"/>
-<text x="905" y="89" font-size="13" font-family="Arial">loro.jpg</text>
-<rect x="880" y="100" width="18" height="18" fill="#e67e22"/>
-<text x="905" y="114" font-size="13" font-family="Arial">etn.jpg</text>
+<text x="700" y="30" text-anchor="middle" font-size="20" font-weight="bold" font-family="Arial">Comparacion de tiempos</text>
+<text x="700" y="52" text-anchor="middle" font-size="14" font-family="Arial">loro.jpg (azul) vs etn.jpg (naranja)</text>
+<line x1="80" y1="70" x2="80" y2="520" stroke="black"/>
+<line x1="80" y1="520" x2="1020" y2="520" stroke="#eee"/>
+<text x="72" y="524" text-anchor="end" font-size="12" font-family="Arial">0</text>
+<line x1="80" y1="430" x2="1020" y2="430" stroke="#eee"/>
+<text x="72" y="434" text-anchor="end" font-size="12" font-family="Arial">10</text>
+<line x1="80" y1="340" x2="1020" y2="340" stroke="#eee"/>
+<text x="72" y="344" text-anchor="end" font-size="12" font-family="Arial">20</text>
+<line x1="80" y1="250" x2="1020" y2="250" stroke="#eee"/>
+<text x="72" y="254" text-anchor="end" font-size="12" font-family="Arial">30</text>
+<line x1="80" y1="160" x2="1020" y2="160" stroke="#eee"/>
+<text x="72" y="164" text-anchor="end" font-size="12" font-family="Arial">40</text>
+<line x1="80" y1="70" x2="1020" y2="70" stroke="#eee"/>
+<text x="72" y="74" text-anchor="end" font-size="12" font-family="Arial">50</text>
+<rect x="95" y="124" width="44" height="396" fill="#3498db" stroke="black"/>
+<text x="117" y="120" text-anchor="middle" font-size="10" font-family="Arial">44</text>
+<rect x="145" y="79" width="44" height="441" fill="#e67e22" stroke="black"/>
+<text x="167" y="75" text-anchor="middle" font-size="10" font-family="Arial">49</text>
+<text x="139" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 139 555)">Secuencial</text>
+<rect x="229" y="304" width="44" height="216" fill="#3498db" stroke="black"/>
+<text x="251" y="300" text-anchor="middle" font-size="10" font-family="Arial">24</text>
+<rect x="279" y="241" width="44" height="279" fill="#e67e22" stroke="black"/>
+<text x="301" y="237" text-anchor="middle" font-size="10" font-family="Arial">31</text>
+<text x="273" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 273 555)">OpenMP 1</text>
+<rect x="363" y="404" width="44" height="116" fill="#3498db" stroke="black"/>
+<text x="385" y="400" text-anchor="middle" font-size="10" font-family="Arial">13</text>
+<rect x="413" y="385" width="44" height="135" fill="#e67e22" stroke="black"/>
+<text x="435" y="381" text-anchor="middle" font-size="10" font-family="Arial">15</text>
+<text x="407" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 407 555)">OpenMP 2</text>
+<rect x="497" y="466" width="44" height="54" fill="#3498db" stroke="black"/>
+<text x="519" y="462" text-anchor="middle" font-size="10" font-family="Arial">6</text>
+<rect x="547" y="404" width="44" height="116" fill="#e67e22" stroke="black"/>
+<text x="569" y="400" text-anchor="middle" font-size="10" font-family="Arial">13</text>
+<text x="541" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 541 555)">OpenMP 4</text>
+<rect x="631" y="457" width="44" height="63" fill="#3498db" stroke="black"/>
+<text x="653" y="453" text-anchor="middle" font-size="10" font-family="Arial">7</text>
+<rect x="681" y="412" width="44" height="108" fill="#e67e22" stroke="black"/>
+<text x="703" y="408" text-anchor="middle" font-size="10" font-family="Arial">12</text>
+<text x="675" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 675 555)">OpenMP 8</text>
+<rect x="765" y="448" width="44" height="72" fill="#3498db" stroke="black"/>
+<text x="787" y="444" text-anchor="middle" font-size="10" font-family="Arial">8</text>
+<rect x="815" y="430" width="44" height="90" fill="#e67e22" stroke="black"/>
+<text x="837" y="426" text-anchor="middle" font-size="10" font-family="Arial">10</text>
+<text x="809" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 809 555)">MPI 4</text>
+<rect x="899" y="421" width="44" height="99" fill="#3498db" stroke="black"/>
+<text x="921" y="417" text-anchor="middle" font-size="10" font-family="Arial">11</text>
+<rect x="949" y="404" width="44" height="116" fill="#e67e22" stroke="black"/>
+<text x="971" y="400" text-anchor="middle" font-size="10" font-family="Arial">13</text>
+<text x="943" y="555" text-anchor="end" font-size="11" font-family="Arial" transform="rotate(-40 943 555)">Hibrida</text>
+<rect x="1040" y="70" width="345" height="450" fill="#f0f7ff" stroke="#3498db" stroke-width="1.5" rx="8"/>
+<text x="1055" y="95" font-size="14" font-family="Arial" fill="#1a5276" font-weight="bold">Que se esta comparando:</text>
+<text x="1055" y="120" font-size="11" font-family="Arial" fill="#2c3e50">Tiempo de ejecucion (ms)</text>
+<text x="1055" y="138" font-size="11" font-family="Arial" fill="#2c3e50">del filtro Cartoon bajo las</text>
+<text x="1055" y="156" font-size="11" font-family="Arial" fill="#2c3e50">mismas condiciones de prueba.</text>
+<text x="1055" y="184" font-size="11" font-family="Arial" fill="#2c3e50" font-weight="bold">Se toma el mejor tiempo de</text>
+<text x="1055" y="200" font-size="11" font-family="Arial" fill="#2c3e50">cada version (filtro=3, niveles=3):</text>
+<text x="1055" y="224" font-size="11" font-family="Arial" fill="#2c3e50">• Secuencial: 1 nucleo</text>
+<text x="1055" y="240" font-size="11" font-family="Arial" fill="#2c3e50">• OpenMP: 1/2/4/8 threads</text>
+<text x="1055" y="256" font-size="11" font-family="Arial" fill="#2c3e50">• MPI 4: 4 procesos</text>
+<text x="1055" y="272" font-size="11" font-family="Arial" fill="#2c3e50">• Hibrida: MPI + OpenMP</text>
+<text x="1055" y="300" font-size="11" font-family="Arial" fill="#2c3e50" font-weight="bold">Leyenda:</text>
+<rect x="1055" y="308" width="14" height="14" fill="#3498db"/>
+<text x="1075" y="320" font-size="11" font-family="Arial" fill="#2c3e50">loro.jpg</text>
+<rect x="1055" y="328" width="14" height="14" fill="#e67e22"/>
+<text x="1075" y="340" font-size="11" font-family="Arial" fill="#2c3e50">etn.jpg</text>
+<text x="1055" y="370" font-size="10" font-family="Arial" fill="#566573" font-style="italic">Objetivo: ver cual version</text>
+<text x="1055" y="384" font-size="10" font-family="Arial" fill="#566573" font-style="italic">termina mas rapido y como</text>
+<text x="1055" y="398" font-size="10" font-family="Arial" fill="#566573" font-style="italic">escala al aumentar threads.</text>
 </svg>

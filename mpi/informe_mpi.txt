@@ -79,3 +79,19 @@ Filtro: 3 | Niveles: 5 | Umbral: 35
 Tiempo: 362 ms
 ==============================
 
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 2
+Filtro: 2 | Niveles: 3 | Umbral: 10
+Tiempo: 16 ms
+==============================
+
+==============================
+Version: MPI
+Imagen: loro.jpg
+Procesos: 4
+Filtro: 5 | Niveles: 9 | Umbral: 50
+Tiempo: 11 ms
+==============================
+

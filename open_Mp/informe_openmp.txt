@@ -439,3 +439,39 @@ Tiempo: 153 ms
 Archivo generado: rdo_openmp_6threads.png
 ==============================
 
+==============================
+Version: OpenMP
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Threads: 1
+Tiempo: 24 ms
+Archivo generado: rdo_openmp_1threads.png
+==============================
+
+==============================
+Version: OpenMP
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Threads: 2
+Tiempo: 15 ms
+Archivo generado: rdo_openmp_2threads.png
+==============================
+
+==============================
+Version: OpenMP
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Threads: 4
+Tiempo: 6 ms
+Archivo generado: rdo_openmp_4threads.png
+==============================
+
+==============================
+Version: OpenMP
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 50
+Threads: 8
+Tiempo: 7 ms
+Archivo generado: rdo_openmp_8threads.png
+==============================
+

@@ -16,6 +16,7 @@
 
 using namespace std;
 
+// Estructura para representar una imagen en memoria
 struct Image {
     int width, height, channels;
     vector<unsigned char> data;
@@ -28,6 +29,8 @@ struct Image {
     }
 };
 
+// Carga una imagen desde disco usando stb_image
+// Devuelve un objeto Image con los pixeles en memoria
 Image loadImage(const char* filename) {
     int w, h, c;
     unsigned char* data = stbi_load(filename, &w, &h, &c, 0);
@@ -44,10 +47,14 @@ Image loadImage(const char* filename) {
     return img;
 }
 
+// Guarda una imagen en disco como PNG usando stb_image_write
 void saveImage(const char* filename, const Image& img) {
     stbi_write_png(filename, img.width, img.height, img.channels, img.data.data(), img.width * img.channels);
 }
 
+// Posteriza la imagen: reduce la cantidad de colores
+// levels = cantidad de niveles por canal (ej: 3 = pocos colores, efecto cartoon)
+// Funciona cuantizando cada valor de color al nivel mas cercano
 Image posterize(const Image& img, int levels) {
     Image result = img;
     float step = 256.0f / levels;
@@ -64,6 +71,8 @@ Image posterize(const Image& img, int levels) {
     return result;
 }
 
+// Convierte la imagen a escala de grises
+// Usa la formula estandar: 0.299*R + 0.587*G + 0.114*B
 vector<unsigned char> toGrayscale(const Image& img) {
     vector<unsigned char> gray(img.width * img.height);
     for (int i = 0; i < img.width * img.height; i++) {
@@ -76,6 +85,8 @@ vector<unsigned char> toGrayscale(const Image& img) {
     return gray;
 }
 
+// Aplica un filtro de desenfoque (blur) promediando los pixeles vecinos
+// ksize = tamaño del kernel (3 o 5). Sirve para suavizar antes de detectar bordes
 vector<unsigned char> blur(const vector<unsigned char>& gray, int w, int h, int ksize) {
     vector<unsigned char> result(gray.size());
     int k = ksize / 2;
@@ -99,6 +110,9 @@ vector<unsigned char> blur(const vector<unsigned char>& gray, int w, int h, int 
     return result;
 }
 
+// Detecta bordes usando el operador de Sobel
+// Calcula el gradiente en X e Y y obtiene la magnitud del borde
+// Devuelve una imagen donde los bordes tienen valores altos
 vector<unsigned char> sobel(const vector<unsigned char>& gray, int w, int h) {
     vector<float> mag(w * h, 0.0f);
     
@@ -130,12 +144,21 @@ vector<unsigned char> sobel(const vector<unsigned char>& gray, int w, int h) {
     return edges;
 }
 
+// Binariza los bordes: si el valor supera el umbral, es borde (255), sino no (0)
+// thresh = umbral de sensibilidad (menor = mas bordes detectados)
 void threshold(vector<unsigned char>& edges, int thresh) {
     for (auto& p : edges) {
         p = (p > thresh) ? 255 : 0;
     }
 }
 
+// Genera el efecto cartoon combinando posterizacion + bordes
+// 1. Convierte a grises
+// 2. Aplica blur para suavizar
+// 3. Detecta bordes con Sobel
+// 4. Binariza los bordes segun el umbral
+// 5. Posteriza la imagen original (reduce colores)
+// 6. Dibuja los bordes en negro sobre la imagen posterizada
 Image generateCartoon(const Image& original, int filterSize, int levels, int thresh) {
     auto gray = toGrayscale(original);
     auto blurred = blur(gray, original.width, original.height, filterSize);
@@ -157,6 +180,9 @@ Image generateCartoon(const Image& original, int filterSize, int levels, int thr
     return cartoon;
 }
 
+// Funcion principal
+// Uso: cartoon.exe imagen.jpg [filtro] [niveles] [umbral]
+// Ejemplo: cartoon.exe loro.jpg 3 3 50
 int main(int argc, char** argv) {
     if (argc < 2) {
         cout << "Uso: cartoon.exe imagen.jpg [filtro=3] [niveles=3] [umbral=50]" << endl;
@@ -172,6 +198,7 @@ int main(int argc, char** argv) {
     Image img = loadImage(input.c_str());
     cout << "Tamaño: " << img.width << "x" << img.height << " (" << img.channels << " canales)" << endl;
     
+        // Mide el tiempo de ejecucion del filtro cartoon
     auto start = chrono::high_resolution_clock::now();
     Image cartoon = generateCartoon(img, filterSize, levels, thresh);
     auto end = chrono::high_resolution_clock::now();
@@ -179,13 +206,17 @@ int main(int argc, char** argv) {
     auto ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
     cout << "Tiempo: " << ms << " ms" << endl;
     
+        // Guarda el resultado como rdo_seq.png
     saveImage("rdo_seq.png", cartoon);
     cout << "Guardado: rdo_seq.png" << endl;
 
     // Abrir la imagen automáticamente (Windows)
+        // Abre la imagen resultante automaticamente (solo Windows)
     system("start \"\" \"rdo_seq.png\"");
 
     // Informe
+        // Guarda un informe con los parametros y el tiempo de ejecucion
+    // Se agrega al final del archivo (modo append) para acumular pruebas
     ofstream informe("informe_secuencial.txt", ios::app);
     if (informe.is_open()) {
         informe << "==============================\n";

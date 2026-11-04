@@ -90,3 +90,45 @@ Filtro: 3 | Niveles: 5 | Umbral: 35
 Tiempo: 1737 ms
 ==============================
 
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 5 | Umbral: 50
+Tiempo: 45 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 7 | Umbral: 45
+Tiempo: 45 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 4 | Niveles: 3 | Umbral: 30
+Tiempo: 59 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 3 | Niveles: 3 | Umbral: 10
+Tiempo: 48 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 4 | Niveles: 5 | Umbral: 25
+Tiempo: 58 ms
+==============================
+
+==============================
+Version: SECUENCIAL
+Imagen: loro.jpg
+Filtro: 5 | Niveles: 9 | Umbral: 50
+Tiempo: 58 ms
+==============================
+

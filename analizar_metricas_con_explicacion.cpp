@@ -5,7 +5,7 @@
 //   - Mejor escalabilidad
 //   - Eficiencia
 //   - Speedup respecto al secuencial
-//   - Graficos SVG de comparacion y escalabilidad OpenMP
+//   - Graficos SVG de comparacion y escalabilidad OpenMP (con explicaciones incluidas)
 //
 // Compilar:
 //   g++ analizar_metricas.cpp -o analizar_metricas.exe -std=c++17 -O2
@@ -79,8 +79,11 @@ vector<Run> parseInforme(const string& path, const string& version) {
             if (inBlock && current.tiempo > 0) {
                 if (current.threads > 0)
                     current.p = current.threads;
-                else if (current.procesos > 0 && current.threads_por > 0)
-                    current.p = current.procesos * current.threads_por;
+                else if (current.threads_por > 0) {
+                    // Hibrida: si no se detecto procesos, asumir 1
+                    int procs = (current.procesos > 0) ? current.procesos : 1;
+                    current.p = procs * current.threads_por;
+                }
                 else if (current.procesos > 0)
                     current.p = current.procesos;
                 else
@@ -114,8 +117,10 @@ vector<Run> parseInforme(const string& path, const string& version) {
     if (inBlock && current.tiempo > 0) {
         if (current.threads > 0)
             current.p = current.threads;
-        else if (current.procesos > 0 && current.threads_por > 0)
-            current.p = current.procesos * current.threads_por;
+        else if (current.threads_por > 0) {
+            int procs = (current.procesos > 0) ? current.procesos : 1;
+            current.p = procs * current.threads_por;
+        }
         else if (current.procesos > 0)
             current.p = current.procesos;
         else
@@ -179,14 +184,14 @@ void generarSVGComparacion(const vector<pair<string, int>>& datos, const string&
     cout << "  -> " << archivo << endl;
 }
 
-void generarSVGOpenMP(const vector<pair<int, int>>& datos, const string& archivo) {
+void generarSVGOpenMP(const vector<pair<int, int>>& datos, const string& archivo, const string& nombreImagen) {
     ofstream svg(archivo);
     if (!svg) return;
 
     int n = (int)datos.size();
     if (n < 2) return;
 
-    int width = 800, height = 500;
+    int width = 800, height = 560;
     int marginL = 70, marginB = 70, marginT = 80, marginR = 50;
     int chartW = width - marginL - marginR;
     int chartH = height - marginT - marginB;
@@ -200,7 +205,7 @@ void generarSVGOpenMP(const vector<pair<int, int>>& datos, const string& archivo
     svg << "<svg width=\"" << width << "\" height=\"" << height << "\" xmlns=\"http://www.w3.org/2000/svg\">\n";
     svg << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
     svg << "<text x=\"" << width/2 << "\" y=\"35\" text-anchor=\"middle\" font-size=\"18\" font-weight=\"bold\" font-family=\"Arial\">";
-    svg << "Escalabilidad OpenMP - loro.jpg (Filtro=3, Niveles=3, Umbral=50)</text>\n";
+    svg << "Escalabilidad OpenMP - " << nombreImagen << " (Filtro=3, Niveles=3, Umbral=50)</text>\n";
 
     // Ejes
     svg << "<line x1=\"" << marginL << "\" y1=\"" << marginT << "\" x2=\"" << marginL << "\" y2=\"" << (marginT+chartH) << "\" stroke=\"black\"/>\n";
@@ -227,7 +232,15 @@ void generarSVGOpenMP(const vector<pair<int, int>>& datos, const string& archivo
     }
     svg << "<polyline points=\"" << polyline << "\" fill=\"none\" stroke=\"#2980b9\" stroke-width=\"3\"/>\n";
 
-    svg << "<text x=\"" << (marginL + chartW/2) << "\" y=\"" << (height - 15) << "\" text-anchor=\"middle\" font-size=\"13\" font-family=\"Arial\">Numero de Threads</text>\n";
+    svg << "<text x=\"" << (marginL + chartW/2) << "\" y=\"" << (height - 70) << "\" text-anchor=\"middle\" font-size=\"13\" font-family=\"Arial\">Numero de Threads</text>\n";
+
+    // Explicacion
+    svg << "<rect x=\"15\" y=\"" << (height - 58) << "\" width=\"" << (width-30) << "\" height=\"48\" fill=\"#eef6ff\" stroke=\"#3498db\" stroke-width=\"1.5\" rx=\"6\"/>\n";
+    svg << "<text x=\"25\" y=\"" << (height - 38) << "\" font-size=\"12\" font-family=\"Arial\" fill=\"#2c3e50\" font-weight=\"bold\">";
+    svg << "Que muestra este grafico:</text>\n";
+    svg << "<text x=\"25\" y=\"" << (height - 22) << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#34495e\">";
+    svg << "Tiempo de ejecucion (ms) del filtro Cartoon usando OpenMP con distintos numeros de threads. Linea azul = tiempo medido.</text>\n";
+
     svg << "</svg>\n";
     cout << "  -> " << archivo << endl;
 }
@@ -268,8 +281,8 @@ void generarGraficos(const vector<Run>& seq, const vector<Run>& omp,
     ofstream svg("grafico_comparacion.svg");
     if (svg) {
         int n = 7;
-        int width = 1050, height = 560;
-        int marginL = 90, marginB = 160, marginT = 80, marginR = 30;
+        int width = 1400, height = 620;
+        int marginL = 80, marginB = 100, marginT = 70, marginR = 380;
         int chartW = width - marginL - marginR;
         int chartH = height - marginT - marginB;
         int maxT = 10;
@@ -280,8 +293,8 @@ void generarGraficos(const vector<Run>& seq, const vector<Run>& omp,
         svg << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         svg << "<svg width=\"" << width << "\" height=\"" << height << "\" xmlns=\"http://www.w3.org/2000/svg\">\n";
         svg << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
-        svg << "<text x=\"" << width/2 << "\" y=\"35\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"bold\" font-family=\"Arial\">Comparacion de tiempos</text>\n";
-        svg << "<text x=\"" << width/2 << "\" y=\"58\" text-anchor=\"middle\" font-size=\"14\" font-family=\"Arial\">loro.jpg (azul) vs etn.jpg (naranja)</text>\n";
+        svg << "<text x=\"" << width/2 << "\" y=\"30\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"bold\" font-family=\"Arial\">Comparacion de tiempos</text>\n";
+        svg << "<text x=\"" << width/2 << "\" y=\"52\" text-anchor=\"middle\" font-size=\"14\" font-family=\"Arial\">loro.jpg (azul) vs etn.jpg (naranja)</text>\n";
 
         // Eje Y
         svg << "<line x1=\"" << marginL << "\" y1=\"" << marginT << "\" x2=\"" << marginL << "\" y2=\"" << (marginT+chartH) << "\" stroke=\"black\"/>\n";
@@ -312,11 +325,55 @@ void generarGraficos(const vector<Run>& seq, const vector<Run>& omp,
             svg << "<text x=\"" << (baseX+barW) << "\" y=\"" << (marginT+chartH+35) << "\" text-anchor=\"end\" font-size=\"11\" font-family=\"Arial\" transform=\"rotate(-40 " << (baseX+barW) << " " << (marginT+chartH+35) << ")\">" << labels[i] << "</text>\n";
         }
 
-        // Leyenda
-        svg << "<rect x=\"880\" y=\"75\" width=\"18\" height=\"18\" fill=\"#3498db\"/>\n";
-        svg << "<text x=\"905\" y=\"89\" font-size=\"13\" font-family=\"Arial\">loro.jpg</text>\n";
-        svg << "<rect x=\"880\" y=\"100\" width=\"18\" height=\"18\" fill=\"#e67e22\"/>\n";
-        svg << "<text x=\"905\" y=\"114\" font-size=\"13\" font-family=\"Arial\">etn.jpg</text>\n";
+        // Panel lateral con explicacion y leyenda
+        int panelX = marginL + chartW + 20;
+        int panelY = marginT;
+        int panelW = width - panelX - 15;
+        int panelH = chartH;
+
+        svg << "<rect x=\"" << panelX << "\" y=\"" << panelY << "\" width=\"" << panelW << "\" height=\"" << panelH << "\" fill=\"#f0f7ff\" stroke=\"#3498db\" stroke-width=\"1.5\" rx=\"8\"/>\n";
+
+        // Titulo del panel
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << (panelY + 25) << "\" font-size=\"14\" font-family=\"Arial\" fill=\"#1a5276\" font-weight=\"bold\">Que se esta comparando:</text>\n";
+
+        // Contenido
+        int textY = panelY + 50;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">Tiempo de ejecucion (ms)</text>\n";
+        textY += 18;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">del filtro Cartoon bajo las</text>\n";
+        textY += 18;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">mismas condiciones de prueba.</text>\n";
+
+        textY += 28;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\" font-weight=\"bold\">Se toma el mejor tiempo de</text>\n";
+        textY += 16;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">cada version (filtro=3, niveles=3):</text>\n";
+
+        textY += 24;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">• Secuencial: 1 nucleo</text>\n";
+        textY += 16;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">• OpenMP: 1/2/4/8 threads</text>\n";
+        textY += 16;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">• MPI 4: 4 procesos</text>\n";
+        textY += 16;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">• Hibrida: MPI + OpenMP</text>\n";
+
+        textY += 28;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\" font-weight=\"bold\">Leyenda:</text>\n";
+        textY += 20;
+        svg << "<rect x=\"" << (panelX + 15) << "\" y=\"" << (textY - 12) << "\" width=\"14\" height=\"14\" fill=\"#3498db\"/>\n";
+        svg << "<text x=\"" << (panelX + 35) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">loro.jpg</text>\n";
+        textY += 20;
+        svg << "<rect x=\"" << (panelX + 15) << "\" y=\"" << (textY - 12) << "\" width=\"14\" height=\"14\" fill=\"#e67e22\"/>\n";
+        svg << "<text x=\"" << (panelX + 35) << "\" y=\"" << textY << "\" font-size=\"11\" font-family=\"Arial\" fill=\"#2c3e50\">etn.jpg</text>\n";
+
+        textY += 30;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"10\" font-family=\"Arial\" fill=\"#566573\" font-style=\"italic\">Objetivo: ver cual version</text>\n";
+        textY += 14;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"10\" font-family=\"Arial\" fill=\"#566573\" font-style=\"italic\">termina mas rapido y como</text>\n";
+        textY += 14;
+        svg << "<text x=\"" << (panelX + 15) << "\" y=\"" << textY << "\" font-size=\"10\" font-family=\"Arial\" fill=\"#566573\" font-style=\"italic\">escala al aumentar threads.</text>\n";
+
         svg << "</svg>\n";
         cout << "  -> grafico_comparacion.svg\n";
     }
@@ -330,7 +387,7 @@ void generarGraficos(const vector<Run>& seq, const vector<Run>& omp,
                 break;
             }
     }
-    if (!ompL.empty()) generarSVGOpenMP(ompL, "grafico_openmp_loro.svg");
+    if (!ompL.empty()) generarSVGOpenMP(ompL, "grafico_openmp_loro.svg", "loro.jpg");
 
     // --- OpenMP etn ---
     vector<pair<int,int>> ompE;
@@ -341,7 +398,7 @@ void generarGraficos(const vector<Run>& seq, const vector<Run>& omp,
                 break;
             }
     }
-    if (!ompE.empty()) generarSVGOpenMP(ompE, "grafico_openmp_etn.svg");
+    if (!ompE.empty()) generarSVGOpenMP(ompE, "grafico_openmp_etn.svg", "etn.jpg");
 
     cout << "\nArchivos generados:\n";
     cout << "  - grafico_comparacion.svg\n";
@@ -432,6 +489,17 @@ void generarReporte(const vector<Run>& all) {
     if (seqRef > 0) {
         printBoth("3. SPEEDUP Y EFICIENCIA (referencia secuencial = " + to_string(seqRef) + " ms)");
         printBoth("----------------------------------------");
+        printBoth("   Speedup (S) = Tiempo_secuencial / Tiempo_paralelo");
+        printBoth("   Indica cuantas veces mas rapido es la version paralela respecto a la secuencial.");
+        printBoth("   Ejemplo: S=2.0x significa que es el doble de rapido.");
+        printBoth("");
+        printBoth("   Eficiencia (E) = (Speedup / Numero_de_unidades_de_computo) * 100%");
+        printBoth("   Mide que tan bien se aprovechan los recursos (threads o procesos).");
+        printBoth("   100% = aprovechamiento perfecto. Menos de 100% = hay overhead.");
+        printBoth("   Nota: Eficiencia > 100% (superlineal) puede ocurrir en problemas pequenos");
+        printBoth("   por mejor uso de cache. Valores muy altos (>150%) suelen indicar que");
+        printBoth("   no se detecto bien la cantidad de threads/procesos usados.");
+        printBoth("");
         printBoth("   Version      | Tiempo | Speedup | Eficiencia");
         printBoth("   ------------- | ------ | ------- | ----------");
 
@@ -439,10 +507,25 @@ void generarReporte(const vector<Run>& all) {
             if (ver == "SECUENCIAL") continue;
             int bestT = INT_MAX;
             int bestP = 1;
+            string bestImg = "";
+            // Buscar el mejor tiempo de esta version que sea comparable
+            // (misma imagen loro.jpg y parametros similares al secuencial de referencia)
             for (const auto& r : all) {
-                if (r.version == ver && r.tiempo < bestT) {
+                if (r.version == ver && r.imagen == "loro.jpg" && 
+                    r.filtro == 3 && r.niveles == 3 && r.tiempo < bestT && r.tiempo > 0) {
                     bestT = r.tiempo;
                     bestP = r.p;
+                    bestImg = r.imagen;
+                }
+            }
+            // Si no hay con esos parametros exactos, buscar el mejor de loro.jpg
+            if (bestT == INT_MAX) {
+                for (const auto& r : all) {
+                    if (r.version == ver && r.imagen == "loro.jpg" && r.tiempo < bestT && r.tiempo > 0) {
+                        bestT = r.tiempo;
+                        bestP = r.p;
+                        bestImg = r.imagen;
+                    }
                 }
             }
             if (bestT != INT_MAX && bestT > 0) {
@@ -452,7 +535,24 @@ void generarReporte(const vector<Run>& all) {
                 line << "   " << left << setw(13) << ver << " | " << right << setw(6) << bestT
                      << " | " << fixed << setprecision(2) << setw(7) << S << "x | "
                      << fixed << setprecision(1) << setw(8) << E << "%";
+                string recurso;
+                if (ver == "OPENMP")
+                    recurso = " (" + to_string(bestP) + " threads)";
+                else if (ver == "MPI")
+                    recurso = " (" + to_string(bestP) + " procesos)";
+                else if (ver == "HIBRIDA")
+                    recurso = " (p=" + to_string(bestP) + ")";
+                line << recurso;
                 printBoth(line.str());
+                if (E > 100.0) {
+                    printBoth("");
+                    printBoth("   Nota sobre " + ver + ":");
+                    printBoth("   Se observa speedup superlineal (eficiencia > 100%).");
+                    printBoth("   Esto puede ocurrir en problemas pequenos por:");
+                    printBoth("   - Mejor aprovechamiento de la memoria cache");
+                    printBoth("   - Menor overhead relativo de sincronizacion");
+                    printBoth("   - Condiciones de ejecucion ligeramente distintas");
+                }
             }
         }
         printBoth("");
@@ -461,6 +561,14 @@ void generarReporte(const vector<Run>& all) {
     // Escalabilidad OpenMP
     printBoth("4. ESCALABILIDAD OPENMP");
     printBoth("----------------------------------------");
+    printBoth("   La escalabilidad mide como mejora (o no) el rendimiento al aumentar");
+    printBoth("   la cantidad de threads. Se calcula el Speedup y Eficiencia para cada");
+    printBoth("   cantidad de threads, usando las mismas formulas de arriba.");
+    printBoth("");
+    printBoth("   Buena escalabilidad: el tiempo baja al aumentar threads y la eficiencia");
+    printBoth("   se mantiene razonablemente alta.");
+    printBoth("   Mala escalabilidad: el tiempo no baja (o sube) y la eficiencia cae mucho.");
+    printBoth("");
     map<int, int> ompBest; // p -> mejor tiempo
     for (const auto& r : all) {
         if (r.version == "OPENMP" && r.threads > 0) {

@@ -30,9 +30,10 @@ echo     Carpeta: %CARPETA_HIB%
 echo.
 echo  5. Ver METRICAS + GRAFICOS de rendimiento
 echo  6. Cambiar rutas de las carpetas
-echo  7. Salir
+echo  7. Conceptos
+echo  8. Salir
 echo.
-set /p opcion=Elige una opcion (1-7): 
+set /p opcion=Elige una opcion (1-8): 
 
 if "%opcion%"=="1" goto secuencial
 if "%opcion%"=="2" goto mpi
@@ -40,7 +41,8 @@ if "%opcion%"=="3" goto openmp
 if "%opcion%"=="4" goto hibrida
 if "%opcion%"=="5" goto metricas
 if "%opcion%"=="6" goto cambiar
-if "%opcion%"=="7" exit
+if "%opcion%"=="7" goto ayuda
+if "%opcion%"=="8" exit
 echo Opcion invalida.
 pause
 goto menu
@@ -50,11 +52,11 @@ cls
 echo --- METRICAS + GRAFICOS DE RENDIMIENTO ---
 echo.
 echo Compilando analizador...
-g++ analizar_metricas.cpp -o analizar_metricas.exe -std=c++17 -O2 2>nul
+g++ analizar_metricas_con_explicacion.cpp -o analizar_metricas.exe -std=c++17 -O2 2>nul
 if not exist analizar_metricas.exe (
     echo ERROR: No se pudo compilar. Asegurate de tener g++ en el PATH.
     echo Puedes compilar manualmente con:
-    echo   g++ analizar_metricas.cpp -o analizar_metricas.exe -std=c++17 -O2
+    echo   g++ analizar_metricas_con_explicacion.cpp -o analizar_metricas.exe -std=c++17 -O2
     pause
     goto menu
 )
@@ -89,6 +91,43 @@ echo.
 echo Rutas actualizadas.
 pause
 goto menu
+
+:ayuda
+cls
+echo ==========================================
+echo            CONCEPTOS
+echo ==========================================
+echo.
+echo VERSIONES:
+echo   Secuencial  - Ejecuta en un solo nucleo, sin paralelismo.
+echo   OpenMP      - Usa varios threads en memoria compartida.
+echo   MPI         - Usa varios procesos en memoria distribuida.
+echo   Hibrida     - Combina procesos MPI + threads OpenMP.
+echo.
+echo PARAMETROS:
+echo   Filtro (3 o 5)    - Tamano del filtro de suavizado.
+echo                       3 = mas rapido, 5 = mas suave.
+echo   Niveles (3 o 9)   - Niveles de posterizado (reduccion de colores).
+echo                       Menos niveles = mas efecto cartoon.
+echo   Umbral (30-100)   - Sensibilidad de deteccion de bordes.
+echo                       Menor = mas bordes, Mayor = menos bordes.
+echo   Threads           - Cantidad de hilos (OpenMP). Probar 1, 2, 4, 8.
+echo   Procesos          - Cantidad de procesos MPI.
+echo.
+echo ARCHIVOS GENERADOS:
+echo   rdo_*.png              - Imagen con efecto cartoon.
+echo   informe_*.txt          - Tiempos de cada ejecucion.
+echo   metricas_rendimiento.txt - Analisis de speedup y eficiencia.
+echo   grafico_*.svg          - Graficos comparativos (abrir con navegador).
+echo.
+echo METRICAS:
+echo   Speedup    = Tiempo_secuencial / Tiempo_paralelo
+echo   Eficiencia = (Speedup / threads_o_procesos) * 100%%
+echo.
+pause
+goto menu
+
+
 
 :secuencial
 cls

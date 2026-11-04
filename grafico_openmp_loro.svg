@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="560" xmlns="http://www.w3.org/2000/svg">
 <rect width="100%" height="100%" fill="white"/>
 <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial">Escalabilidad OpenMP - loro.jpg (Filtro=3, Niveles=3, Umbral=50)</text>
-<line x1="70" y1="80" x2="70" y2="430" stroke="black"/>
-<line x1="70" y1="430" x2="750" y2="430" stroke="black"/>
-<text x="62" y="434" text-anchor="end" font-size="11" font-family="Arial">0</text>
-<line x1="70" y1="430" x2="750" y2="430" stroke="#eee"/>
-<text x="62" y="364" text-anchor="end" font-size="11" font-family="Arial">5</text>
-<line x1="70" y1="360" x2="750" y2="360" stroke="#eee"/>
-<text x="62" y="294" text-anchor="end" font-size="11" font-family="Arial">10</text>
-<line x1="70" y1="290" x2="750" y2="290" stroke="#eee"/>
-<text x="62" y="224" text-anchor="end" font-size="11" font-family="Arial">15</text>
-<line x1="70" y1="220" x2="750" y2="220" stroke="#eee"/>
-<text x="62" y="154" text-anchor="end" font-size="11" font-family="Arial">20</text>
-<line x1="70" y1="150" x2="750" y2="150" stroke="#eee"/>
+<line x1="70" y1="80" x2="70" y2="490" stroke="black"/>
+<line x1="70" y1="490" x2="750" y2="490" stroke="black"/>
+<text x="62" y="494" text-anchor="end" font-size="11" font-family="Arial">0</text>
+<line x1="70" y1="490" x2="750" y2="490" stroke="#eee"/>
+<text x="62" y="412" text-anchor="end" font-size="11" font-family="Arial">5</text>
+<line x1="70" y1="408" x2="750" y2="408" stroke="#eee"/>
+<text x="62" y="330" text-anchor="end" font-size="11" font-family="Arial">10</text>
+<line x1="70" y1="326" x2="750" y2="326" stroke="#eee"/>
+<text x="62" y="248" text-anchor="end" font-size="11" font-family="Arial">15</text>
+<line x1="70" y1="244" x2="750" y2="244" stroke="#eee"/>
+<text x="62" y="166" text-anchor="end" font-size="11" font-family="Arial">20</text>
+<line x1="70" y1="162" x2="750" y2="162" stroke="#eee"/>
 <text x="62" y="84" text-anchor="end" font-size="11" font-family="Arial">25</text>
 <line x1="70" y1="80" x2="750" y2="80" stroke="#eee"/>
-<text x="20" y="255" transform="rotate(-90 20 255)" font-size="12" font-family="Arial">Tiempo (ms)</text>
-<circle cx="70" cy="94" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
-<text x="70" y="82" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">24 ms</text>
-<text x="70" y="455" text-anchor="middle" font-size="12" font-family="Arial">1</text>
-<circle cx="296" cy="248" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
-<text x="296" y="236" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">13 ms</text>
-<text x="296" y="455" text-anchor="middle" font-size="12" font-family="Arial">2</text>
-<circle cx="523" cy="304" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
-<text x="523" y="292" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">9 ms</text>
-<text x="523" y="455" text-anchor="middle" font-size="12" font-family="Arial">4</text>
-<circle cx="750" cy="304" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
-<text x="750" y="292" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">9 ms</text>
-<text x="750" y="455" text-anchor="middle" font-size="12" font-family="Arial">8</text>
-<polyline points="70,94 296,248 523,304 750,304" fill="none" stroke="#2980b9" stroke-width="3"/>
-<text x="410" y="485" text-anchor="middle" font-size="13" font-family="Arial">Numero de Threads</text>
+<text x="20" y="285" transform="rotate(-90 20 285)" font-size="12" font-family="Arial">Tiempo (ms)</text>
+<circle cx="70" cy="96" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
+<text x="70" y="84" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">24 ms</text>
+<text x="70" y="515" text-anchor="middle" font-size="12" font-family="Arial">1</text>
+<circle cx="296" cy="276" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
+<text x="296" y="264" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">13 ms</text>
+<text x="296" y="515" text-anchor="middle" font-size="12" font-family="Arial">2</text>
+<circle cx="523" cy="342" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
+<text x="523" y="330" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">9 ms</text>
+<text x="523" y="515" text-anchor="middle" font-size="12" font-family="Arial">4</text>
+<circle cx="750" cy="342" r="6" fill="#2980b9" stroke="white" stroke-width="2"/>
+<text x="750" y="330" text-anchor="middle" font-size="11" font-weight="bold" font-family="Arial">9 ms</text>
+<text x="750" y="515" text-anchor="middle" font-size="12" font-family="Arial">8</text>
+<polyline points="70,96 296,276 523,342 750,342" fill="none" stroke="#2980b9" stroke-width="3"/>
+<text x="410" y="490" text-anchor="middle" font-size="13" font-family="Arial">Numero de Threads</text>
+<rect x="15" y="502" width="770" height="48" fill="#eef6ff" stroke="#3498db" stroke-width="1.5" rx="6"/>
+<text x="25" y="522" font-size="12" font-family="Arial" fill="#2c3e50" font-weight="bold">Que muestra este grafico:</text>
+<text x="25" y="538" font-size="11" font-family="Arial" fill="#34495e">Tiempo de ejecucion (ms) del filtro Cartoon usando OpenMP con distintos numeros de threads. Linea azul = tiempo medido.</text>
 </svg>
